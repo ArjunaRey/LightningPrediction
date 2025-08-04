@@ -26,6 +26,7 @@ with st.form("form_input"):
 
 # === 5. Proses Prediksi ===
 if submitted:
+    # --- Klasifikasi ---
     X_input_cls = pd.DataFrame([{
         'LI': LI,
         'SWEAT': SWEAT,
@@ -34,7 +35,7 @@ if submitted:
         'CAPE': CAPE,
         'SI': SI,
         'PW': PW
-    }])[fitur_model_cls]
+    }])[fitur_model]
 
     prob = model_cls.predict_proba(X_input_cls)[0, 1]
     klasifikasi = "⚡ Petir" if prob >= 0.5 else "✅ Non-Petir"
@@ -42,7 +43,7 @@ if submitted:
     st.metric("Probabilitas Petir", f"{prob:.2f}")
     st.success(f"Hasil Klasifikasi: {klasifikasi}")
 
-    # === 6. Jika Ada Petir, Lanjutkan ke Prediksi Regresi ===
+    # --- Regresi Jika Terjadi Petir ---
     if prob >= 0.5:
         X_input_reg = pd.DataFrame([{
             'LI': LI,
@@ -55,10 +56,9 @@ if submitted:
         }])[fitur_model_reg]
 
         pred_reg_log = model_reg.predict(X_input_reg)
-        pred_reg = np.expm1(pred_reg_log)  # Jika model menggunakan log1p saat training
+        pred_reg = np.expm1(pred_reg_log)  # Jika menggunakan log1p saat training
 
         st.metric("Estimasi Jumlah Sambaran CG", f"{int(pred_reg[0]):,} sambaran")
         st.info("Prediksi jumlah sambaran CG hanya ditampilkan jika petir terdeteksi.")
-
     else:
         st.warning("Tidak ada prediksi petir, sehingga estimasi jumlah sambaran tidak ditampilkan.")
