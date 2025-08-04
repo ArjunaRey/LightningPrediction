@@ -10,21 +10,6 @@ model_reg, fitur_model_reg = joblib.load("model_regresi_petir3.pkl")
 
 # === 3. Streamlit Interface ===
 st.set_page_config(page_title="Prediksi Petir & Jumlah Sambaran CG", layout="centered")
-# Ubah background menjadi putih
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-color: white;
-        color: black;
-    }
-    h1, h2, h3, h4, h5 {
-        color: black;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 st.title("🌩️ Prediksi Kejadian Petir dan Estimasi Jumlah Sambaran CG")
 st.markdown("Masukkan parameter atmosfer berikut:")
 
