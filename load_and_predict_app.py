@@ -43,26 +43,28 @@ if submitted:
     st.metric("Probabilitas Petir", f"{prob:.2f}")
     st.success(f"Hasil Klasifikasi: {klasifikasi}")
 
-  # --- Regresi Jika Terjadi Petir ---
-if prob >= 0.5:
-    X_input_reg = pd.DataFrame([{
-        'LI': LI,
-        'SWEAT': SWEAT,
-        'KI': KI,
-        'TTI': TTI,
-        'CAPE': CAPE,
-        'SI': SI,
-        'PW': PW
-    }])[fitur_model_reg]
+    # --- Regresi Jika Terjadi Petir ---
+    if prob >= 0.5:
+        X_input_reg = pd.DataFrame([{
+            'LI': LI,
+            'SWEAT': SWEAT,
+            'KI': KI,
+            'TTI': TTI,
+            'CAPE': CAPE,
+            'SI': SI,
+            'PW': PW
+        }])[fitur_model_reg]
 
-    pred_reg_log = model_reg.predict(X_input_reg)
+        pred_reg_log = model_reg.predict(X_input_reg)
 
-    # Cegah log value terlalu besar
-    pred_reg_log = np.clip(pred_reg_log, a_min=None, a_max=20)  # expm1(20) ≈ 4.85 juta
-    pred_reg = np.expm1(pred_reg_log)
+        # Cegah overflow dengan membatasi log value
+        pred_reg_log = np.clip(pred_reg_log, a_min=None, a_max=20)
+        pred_reg = np.expm1(pred_reg_log)  # inverse dari log1p
 
-    try:
-        st.metric("Estimasi Jumlah Sambaran CG", f"{int(pred_reg[0]):,} sambaran")
-        st.info("Prediksi jumlah sambaran CG hanya ditampilkan jika petir terdeteksi.")
-    except OverflowError:
-        st.error("❗ Prediksi jumlah sambaran terlalu besar untuk ditampilkan. Coba periksa model regresimu.")
+        try:
+            st.metric("Estimasi Jumlah Sambaran CG", f"{int(pred_reg[0]):,} sambaran")
+            st.info("Prediksi jumlah sambaran CG hanya ditampilkan jika petir terdeteksi.")
+        except OverflowError:
+            st.error("❗ Prediksi jumlah sambaran terlalu besar untuk ditampilkan.")
+    else:
+        st.warning("Tidak ada prediksi petir, sehingga estimasi jumlah sambaran tidak ditampilkan.")
