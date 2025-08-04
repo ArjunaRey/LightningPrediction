@@ -59,7 +59,7 @@ if submitted:
 
         # Cegah overflow dengan membatasi log value
         pred_reg_log = np.clip(pred_reg_log, a_min=None, a_max=20)
-       pred_reg = pred_reg_log  # langsung gunakan hasil prediksi
+        pred_reg = pred_reg_log  # langsung gunakan hasil prediksi
 
         try:
             st.metric("Estimasi Jumlah Sambaran CG", f"{int(pred_reg[0]):,} sambaran")
