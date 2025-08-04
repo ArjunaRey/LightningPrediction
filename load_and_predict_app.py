@@ -1,34 +1,64 @@
-import streamlit as st
+# === 1. Import Library ===
 import pandas as pd
+import numpy as np
 import joblib
+import streamlit as st
 
-# Load model
-clf = joblib.load("model_klasifikasi_petir.pkl")
-reg_model = joblib.load("model_regresi_petir.pkl")
+# === 2. Load Model Klasifikasi dan Regresi ===
+model_cls, fitur_model_cls = joblib.load("model_klasifikasi_petir.pkl")
+model_reg, fitur_model_reg = joblib.load("model_regresi_petir.pkl")
 
-# Upload data
-st.title("Prediksi Petir dan Jumlah Sambaran CG")
-uploaded = st.file_uploader("Unggah file Excel", type=["xlsx"])
+# === 3. Streamlit Interface ===
+st.set_page_config(page_title="Prediksi Petir & Jumlah Sambaran CG", layout="centered")
+st.title("🌩️ Prediksi Kejadian Petir dan Estimasi Jumlah Sambaran CG")
+st.markdown("Masukkan parameter atmosfer berikut:")
 
-if uploaded:
-    df = pd.read_excel(uploaded)
-    df["timestamp"] = pd.to_datetime(df["timestamp"])
-    df["year"] = df["timestamp"].dt.year
+# === 4. Form Input User ===
+with st.form("form_input"):
+    LI = st.number_input("Lifted Index (LI)", value=-2.0)
+    SWEAT = st.number_input("SWEAT Index", value=200.0)
+    KI = st.number_input("K Index", value=30.0)
+    TTI = st.number_input("Total Totals Index (TTI)", value=48.0)
+    CAPE = st.number_input("CAPE (J/kg)", value=1000.0)
+    SI = st.number_input("Showalter Index (SI)", value=1.0)
+    PW = st.number_input("Precipitable Water (PW)", value=40.0)
+    submitted = st.form_submit_button("🔍 Prediksi")
 
-    fitur = [col for col in df.columns if col not in ["timestamp", "label_petir_biner", "count_total_cg", "year", "season", "hour", "month"]]
-    X = df[fitur]
+# === 5. Proses Prediksi ===
+if submitted:
+    X_input_cls = pd.DataFrame([{
+        'LI': LI,
+        'SWEAT': SWEAT,
+        'KI': KI,
+        'TTI': TTI,
+        'CAPE': CAPE,
+        'SI': SI,
+        'PW': PW
+    }])[fitur_model_cls]
 
-    # Prediksi klasifikasi
-    y_pred = clf.predict(X)
-    df["prediksi_petir"] = y_pred
+    prob = model_cls.predict_proba(X_input_cls)[0, 1]
+    klasifikasi = "⚡ Petir" if prob >= 0.5 else "✅ Non-Petir"
 
-    # Prediksi regresi jika petir diprediksi terjadi
-    if (df["prediksi_petir"] == 1).any():
-        df_reg = df[df["prediksi_petir"] == 1]
-        X_reg = df_reg[fitur]
-        y_reg_pred = reg_model.predict(X_reg)
-        df.loc[df["prediksi_petir"] == 1, "prediksi_jumlah_cg"] = y_reg_pred
+    st.metric("Probabilitas Petir", f"{prob:.2f}")
+    st.success(f"Hasil Klasifikasi: {klasifikasi}")
 
-    st.success("✅ Prediksi selesai.")
-    st.dataframe(df[["timestamp", "prediksi_petir", "prediksi_jumlah_cg"]].head(20))
-    st.download_button("📥 Download hasil", data=df.to_csv(index=False), file_name="hasil_prediksi.csv", mime="text/csv")
+    # === 6. Jika Ada Petir, Lanjutkan ke Prediksi Regresi ===
+    if prob >= 0.5:
+        X_input_reg = pd.DataFrame([{
+            'LI': LI,
+            'SWEAT': SWEAT,
+            'KI': KI,
+            'TTI': TTI,
+            'CAPE': CAPE,
+            'SI': SI,
+            'PW': PW
+        }])[fitur_model_reg]
+
+        pred_reg_log = model_reg.predict(X_input_reg)
+        pred_reg = np.expm1(pred_reg_log)  # Jika model menggunakan log1p saat training
+
+        st.metric("Estimasi Jumlah Sambaran CG", f"{int(pred_reg[0]):,} sambaran")
+        st.info("Prediksi jumlah sambaran CG hanya ditampilkan jika petir terdeteksi.")
+
+    else:
+        st.warning("Tidak ada prediksi petir, sehingga estimasi jumlah sambaran tidak ditampilkan.")
