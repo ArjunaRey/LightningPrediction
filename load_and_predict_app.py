@@ -40,7 +40,7 @@ if submitted:
     prob = model_cls.predict_proba(X_input_cls)[0, 1]
     klasifikasi = "⚡ Petir" if prob >= 0.5 else "✅ Non-Petir"
 
-    st.metric("Probabilitas Petir", f"{prob:.2f}")
+    st.metric("Probabilitas Petir", f"{prob * 100:.1f}%")
     st.success(f"Hasil Klasifikasi: {klasifikasi}")
 
     # --- Regresi Jika Terjadi Petir ---
