@@ -5,8 +5,8 @@ import joblib
 import streamlit as st
 
 # === 2. Load Model Klasifikasi dan Regresi ===
-model_cls, fitur_model = joblib.load("model_klasifikasi_petir2.pkl")
-model_reg, fitur_model_reg = joblib.load("model_regresi_petir2.pkl")
+model_cls, fitur_model = joblib.load("model_klasifikasi_petir3.pkl")
+model_reg, fitur_model_reg = joblib.load("model_regresi_petir3.pkl")
 
 # === 3. Streamlit Interface ===
 st.set_page_config(page_title="Prediksi Petir & Jumlah Sambaran CG", layout="centered")
