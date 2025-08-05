@@ -5,10 +5,12 @@ import joblib
 import streamlit as st
 
 # === 2. CSS untuk latar putih & teks bersih ===
-# === CSS Styling untuk White Theme Total ===
+# === SETTING TAMPILAN PUTIH ===
+st.set_page_config(page_title="Prediksi Petir & Sambaran CG", layout="wide")
+
 st.markdown("""
     <style>
-    html, body, [data-testid="stApp"], .main, .block-container {
+    html, body, [data-testid="stApp"] {
         background-color: white !important;
         color: #111 !important;
     }
@@ -17,13 +19,14 @@ st.markdown("""
         color: #111 !important;
         border: 1px solid #ccc;
     }
+    .stMetricLabel, .stMetricValue {
+        color: #111 !important;
+    }
     .stButton button {
         background-color: #0c66f5 !important;
         color: white !important;
         border: none;
-    }
-    .stMetricLabel, .stMetricValue {
-        color: #111 !important;
+        font-weight: bold;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -33,8 +36,17 @@ model_cls, fitur_model = joblib.load("model_klasifikasi_petir4.pkl")
 model_log, fitur_model_log = joblib.load("model_regresi_log.pkl")
 model_lin, fitur_model_lin = joblib.load("model_regresi_linear.pkl")
 
+st.sidebar.markdown("""
+    <div style="text-align: center;">
+        <img src="logo_stmkg.png" width="140">
+        <hr style="margin-top:10px; margin-bottom:10px;">
+        <h4>Carl Demko</h4>
+        <p><em>STMKG 2025</em></p>
+    </div>
+""", unsafe_allow_html=True)
+
+
 # === 3. Streamlit Interface ===
-st.set_page_config(page_title="Prediksi Petir & Jumlah Sambaran CG", layout="centered")
 st.title("🌩️ Prediksi Kejadian Petir dan Estimasi Jumlah Sambaran CG")
 st.markdown("Masukkan parameter atmosfer berikut:")
 
