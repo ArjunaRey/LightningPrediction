@@ -39,7 +39,7 @@ with st.form("form_input"):
     st.subheader("Masukkan Parameter Atmosfer:")
 
     LI = st.slider("Lifted Index (LI)", min_value=-10.0, max_value=10.0, value=-2.0, step=0.01)
-    SWEAT = st.slider("SWEAT Index", min_value=100.0, max_value=600.0, value=200.0, step=0.01)
+    SWEAT = st.slider("SWEAT Index", min_value=100.0, max_value=300.0, value=200.0, step=0.01)
     KI = st.slider("K Index", min_value=10.0, max_value=50.0, value=30.0, step=0.01)
     TTI = st.slider("Total Totals Index (TTI)", min_value=20.0, max_value=50.0, value=48.0, step=0.01)
     CAPE = st.slider("CAPE (J/kg)", min_value=0.0, max_value=3000.0, value=1000.0, step=0.01)
