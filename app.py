@@ -46,7 +46,7 @@ with st.form("form_input"):
     SI = st.number_input("Showalter Index (SI)", min_value=-5.0, max_value=5.0, value=1.0, step=0.01)
     PW = st.number_input("Precipitable Water (PW)", min_value=30.0, max_value=80.0, value=40.0, step=0.01)
 
-    submit = st.form_submit_button("Prediksi")
+    submit = st.form_submit_button("🔍 Prediksi")
 
 
 # === 5. Proses Prediksi ===
