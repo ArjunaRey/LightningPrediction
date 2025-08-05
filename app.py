@@ -12,12 +12,21 @@ model_cls, fitur_model = joblib.load("model_klasifikasi_petir4.pkl")
 model_log, fitur_model_log = joblib.load("model_regresi_log.pkl")
 model_lin, fitur_model_lin = joblib.load("model_regresi_linear.pkl")
 
-# === SIDEBAR: Logo + Nama ===
 with st.sidebar:
     st.image("logo_stmkg.png", width=140)
-    st.markdown("---")
     st.markdown("#### Arjuna Reynaldi")
     st.markdown("*STMKG 2025*")
+    st.markdown("📧 arjunareynaldi58@gmail.com")
+    st.markdown("---")
+    st.markdown("📘 *Aplikasi ini memprediksi petir dan estimasi sambaran CG berdasarkan parameter atmosfer.*")
+    st.markdown("🧠 Model: XGBClassifier & XGBRegressor")
+    with st.expander("ℹ️ Cara Penggunaan"):
+        st.markdown(\"\"\"
+        - Isi parameter atmosfer via slider
+        - Klik **Prediksi**
+        - Jika petir terdeteksi, hasil estimasi sambaran muncul
+        \"\"\")
+
 
 # === 3. Streamlit Interface ===
 st.set_page_config(page_title="Prediksi Petir & Jumlah Sambaran CG", layout="centered")
