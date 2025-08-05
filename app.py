@@ -6,6 +6,7 @@ import streamlit as st
 
 # === 2. CSS untuk latar putih & teks bersih ===
 # === SETTING TAMPILAN PUTIH ===
+# === SETTING FULL PUTIH TEMA ===
 st.set_page_config(page_title="Prediksi Petir & Sambaran CG", layout="wide")
 
 st.markdown("""
@@ -14,12 +15,12 @@ st.markdown("""
         background-color: white !important;
         color: #111 !important;
     }
-    .stNumberInput input {
+    .stNumberInput input, .stTextInput input {
         background-color: white !important;
-        color: #111 !important;
-        border: 1px solid #ccc;
+        color: black !important;
+        border: 1px solid #ccc !important;
     }
-    .stMetricLabel, .stMetricValue {
+    .stMetricLabel, .stMetricValue, .stMarkdown p, label {
         color: #111 !important;
     }
     .stButton button {
@@ -36,14 +37,12 @@ model_cls, fitur_model = joblib.load("model_klasifikasi_petir4.pkl")
 model_log, fitur_model_log = joblib.load("model_regresi_log.pkl")
 model_lin, fitur_model_lin = joblib.load("model_regresi_linear.pkl")
 
-st.sidebar.markdown("""
-    <div style="text-align: center;">
-        <img src="logo_stmkg.png" width="140">
-        <hr style="margin-top:10px; margin-bottom:10px;">
-        <h4>Carl Demko</h4>
-        <p><em>STMKG 2025</em></p>
-    </div>
-""", unsafe_allow_html=True)
+# === SIDEBAR: Logo + Nama ===
+with st.sidebar:
+    st.image("logo_stmkg.png", width=140)
+    st.markdown("---")
+    st.markdown("#### Arjuna Reynaldi")
+    st.markdown("*STMKG 2025*")
 
 
 # === 3. Streamlit Interface ===
