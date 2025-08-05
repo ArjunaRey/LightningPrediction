@@ -38,15 +38,15 @@ st.markdown("Masukkan parameter atmosfer berikut:")
 with st.form("form_input"):
     st.subheader("Masukkan Parameter Atmosfer:")
 
-    LI = st.slider("Lifted Index (LI)", min_value=-10.0, max_value=10.0, value=-2.0, step=0.1)
-    SWEAT = st.slider("SWEAT Index", min_value=100.0, max_value=300.0, value=200.0, step=0.1)
-    KI = st.slider("K Index", min_value=10.0, max_value=50.0, value=30.0, step=0.01)
-    TTI = st.slider("Total Totals Index (TTI)", min_value=20.0, max_value=50.0, value=48.0, step=0.01)
-    CAPE = st.slider("CAPE (J/kg)", min_value=0.0, max_value=3000.0, value=1000.0, step=0.01)
-    SI = st.slider("Showalter Index (SI)", min_value=-5.0, max_value=5.0, value=1.0, step=0.01)
-    PW = st.slider("Precipitable Water (PW)", min_value=30.0, max_value=80.0, value=40.0, step=0.01)
+    LI = st.number_input("Lifted Index (LI)", min_value=-10.0, max_value=10.0, value=-2.0, step=0.01)
+    SWEAT = st.number_input("SWEAT Index", min_value=100.0, max_value=300.0, value=200.0, step=0.01)
+    KI = st.number_input("K Index", min_value=10.0, max_value=50.0, value=30.0, step=0.01)
+    TTI = st.number_input("Total Totals Index (TTI)", min_value=20.0, max_value=50.0, value=48.0, step=0.01)
+    CAPE = st.number_input("CAPE (J/kg)", min_value=0.0, max_value=3000.0, value=1000.0, step=0.01)
+    SI = st.number_input("Showalter Index (SI)", min_value=-5.0, max_value=5.0, value=1.0, step=0.01)
+    PW = st.number_input("Precipitable Water (PW)", min_value=30.0, max_value=80.0, value=40.0, step=0.01)
 
-    submitted = st.form_submit_button("🔍 Prediksi")
+    submit = st.form_submit_button("Prediksi")
 
 
 # === 5. Proses Prediksi ===
