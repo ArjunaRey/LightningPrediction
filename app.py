@@ -78,7 +78,7 @@ if submitted:
 
         try:
             st.metric("Estimasi Jumlah Sambaran CG", f"{int(final_pred):,} sambaran")
-            st.info(f"Prediksi gabungan model log (α={alpha}) dan linear.")
+            #st.info(f"Prediksi gabungan model log (α={alpha}) dan linear.")
         except OverflowError:
             st.error("❗ Prediksi jumlah sambaran terlalu besar untuk ditampilkan.")
     else:
