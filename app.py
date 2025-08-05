@@ -11,18 +11,35 @@ st.set_page_config(page_title="Prediksi Petir & Sambaran CG", layout="wide")
 
 st.markdown("""
     <style>
+    /* Warna dasar halaman */
     html, body, [data-testid="stApp"] {
         background-color: white !important;
         color: #111 !important;
     }
+
+    /* Input box */
     .stNumberInput input, .stTextInput input {
         background-color: white !important;
         color: black !important;
         border: 1px solid #ccc !important;
     }
-    .stMetricLabel, .stMetricValue, .stMarkdown p, label {
+
+    /* Label-label umum */
+    .stMetricLabel, .stMetricValue, .stMarkdown p, label, .css-17eq0hr, .css-1cpxqw2 {
         color: #111 !important;
     }
+
+    /* Untuk heading dan subheader */
+    h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {
+        color: #111 !important;
+    }
+
+    /* Slider label */
+    .stSlider label, .stSlider div {
+        color: #111 !important;
+    }
+
+    /* Tombol submit */
     .stButton button {
         background-color: #0c66f5 !important;
         color: white !important;
@@ -31,6 +48,7 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 # === 2. Load Model Klasifikasi dan Dua Regresi (Log + Linear) ===
 model_cls, fitur_model = joblib.load("model_klasifikasi_petir4.pkl")
@@ -50,15 +68,20 @@ st.title("🌩️ Prediksi Kejadian Petir dan Estimasi Jumlah Sambaran CG")
 st.markdown("Masukkan parameter atmosfer berikut:")
 
 # === 4. Form Input User ===
+# === FORM INPUT ===
 with st.form("form_input"):
-    LI = st.number_input("Lifted Index (LI)", value=-2.0)
-    SWEAT = st.number_input("SWEAT Index", value=200.0)
-    KI = st.number_input("K Index", value=30.0)
-    TTI = st.number_input("Total Totals Index (TTI)", value=48.0)
-    CAPE = st.number_input("CAPE (J/kg)", value=1000.0)
-    SI = st.number_input("Showalter Index (SI)", value=1.0)
-    PW = st.number_input("Precipitable Water (PW)", value=40.0)
+    st.subheader("🧪 Masukkan Parameter Atmosfer:")
+
+    LI = st.slider("Lifted Index (LI)", min_value=-10.0, max_value=10.0, value=-2.0, step=0.1)
+    SWEAT = st.slider("SWEAT Index", min_value=100.0, max_value=600.0, value=200.0, step=1.0)
+    KI = st.slider("K Index", min_value=10.0, max_value=50.0, value=30.0, step=1.0)
+    TTI = st.slider("Total Totals Index (TTI)", min_value=20.0, max_value=70.0, value=48.0, step=1.0)
+    CAPE = st.slider("CAPE (J/kg)", min_value=0.0, max_value=5000.0, value=1000.0, step=10.0)
+    SI = st.slider("Showalter Index (SI)", min_value=-10.0, max_value=10.0, value=1.0, step=0.1)
+    PW = st.slider("Precipitable Water (PW)", min_value=10.0, max_value=80.0, value=40.0, step=1.0)
+
     submitted = st.form_submit_button("🔍 Prediksi")
+
 
 # === 5. Proses Prediksi ===
 if submitted:
