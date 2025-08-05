@@ -12,21 +12,33 @@ model_cls, fitur_model = joblib.load("model_klasifikasi_petir4.pkl")
 model_log, fitur_model_log = joblib.load("model_regresi_log.pkl")
 model_lin, fitur_model_lin = joblib.load("model_regresi_linear.pkl")
 
+# === SIDEBAR: Logo + Nama ===
+with st.sidebar:
+    st.image("logo_stmkg.png", width=140)
+    st.markdown("---")
+    st.markdown("#### Arjuna Reynaldi")
+    st.markdown("*STMKG 2025*")
+
 # === 3. Streamlit Interface ===
 st.set_page_config(page_title="Prediksi Petir & Jumlah Sambaran CG", layout="centered")
 st.title("🌩️ Prediksi Kejadian Petir dan Estimasi Jumlah Sambaran CG")
 st.markdown("Masukkan parameter atmosfer berikut:")
 
 # === 4. Form Input User ===
+# === FORM INPUT ===
 with st.form("form_input"):
-    LI = st.number_input("Lifted Index (LI)", value=-2.0)
-    SWEAT = st.number_input("SWEAT Index", value=200.0)
-    KI = st.number_input("K Index", value=30.0)
-    TTI = st.number_input("Total Totals Index (TTI)", value=48.0)
-    CAPE = st.number_input("CAPE (J/kg)", value=1000.0)
-    SI = st.number_input("Showalter Index (SI)", value=1.0)
-    PW = st.number_input("Precipitable Water (PW)", value=40.0)
+    st.subheader("🧪 Masukkan Parameter Atmosfer:")
+
+    LI = st.slider("Lifted Index (LI)", min_value=-10.0, max_value=10.0, value=-2.0, step=0.1)
+    SWEAT = st.slider("SWEAT Index", min_value=100.0, max_value=600.0, value=200.0, step=1.0)
+    KI = st.slider("K Index", min_value=10.0, max_value=50.0, value=30.0, step=1.0)
+    TTI = st.slider("Total Totals Index (TTI)", min_value=20.0, max_value=70.0, value=48.0, step=1.0)
+    CAPE = st.slider("CAPE (J/kg)", min_value=0.0, max_value=5000.0, value=1000.0, step=10.0)
+    SI = st.slider("Showalter Index (SI)", min_value=-10.0, max_value=10.0, value=1.0, step=0.1)
+    PW = st.slider("Precipitable Water (PW)", min_value=10.0, max_value=80.0, value=40.0, step=1.0)
+
     submitted = st.form_submit_button("🔍 Prediksi")
+
 
 # === 5. Proses Prediksi ===
 if submitted:
