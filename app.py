@@ -21,11 +21,11 @@ with st.sidebar:
     st.markdown("📘 *Aplikasi ini memprediksi petir dan estimasi sambaran CG berdasarkan parameter atmosfer.*")
     st.markdown("🧠 Model: XGBClassifier & XGBRegressor")
     with st.expander("ℹ️ Cara Penggunaan"):
-        st.markdown(\"\"\"
+        st.markdown("""
         - Isi parameter atmosfer via slider
         - Klik **Prediksi**
         - Jika petir terdeteksi, hasil estimasi sambaran muncul
-        \"\"\")
+        """)
 
 
 # === 3. Streamlit Interface ===
