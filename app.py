@@ -11,43 +11,59 @@ st.set_page_config(page_title="Prediksi Petir & Sambaran CG", layout="wide")
 
 st.markdown("""
     <style>
-    /* Warna dasar halaman */
     html, body, [data-testid="stApp"] {
         background-color: white !important;
         color: #111 !important;
     }
 
-    /* Input box */
+    /* INPUT */
     .stNumberInput input, .stTextInput input {
         background-color: white !important;
         color: black !important;
         border: 1px solid #ccc !important;
     }
 
-    /* Label-label umum */
-    .stMetricLabel, .stMetricValue, .stMarkdown p, label, .css-17eq0hr, .css-1cpxqw2 {
+    /* METRIC OUTPUT (angka besar) */
+    .stMetricValue {
         color: #111 !important;
+        font-weight: bold !important;
     }
 
-    /* Untuk heading dan subheader */
-    h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {
-        color: #111 !important;
+    /* METRIC LABEL */
+    .stMetricLabel {
+        color: #222 !important;
     }
 
-    /* Slider label */
-    .stSlider label, .stSlider div {
-        color: #111 !important;
-    }
-
-    /* Tombol submit */
+    /* TOMBOL */
     .stButton button {
         background-color: #0c66f5 !important;
         color: white !important;
-        border: none;
         font-weight: bold;
+        border-radius: 6px;
+    }
+
+    /* TEKS BIASA */
+    .stMarkdown, .stMarkdown p, label, h1, h2, h3, h4, h5, h6 {
+        color: #111 !important;
+    }
+
+    /* TEKS DI DALAM INFO BOX (st.success, st.info, dll) */
+    .element-container:has(.stAlert) {
+        color: #111 !important;
+    }
+
+    /* SIDEBAR TEKS */
+    section[data-testid="stSidebar"] {
+        color: white !important;
+    }
+
+    /* PERBAIKI INPUT SLIDER LABEL */
+    .stSlider label, .stSlider div {
+        color: #111 !important;
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 
 # === 2. Load Model Klasifikasi dan Dua Regresi (Log + Linear) ===
