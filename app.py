@@ -4,6 +4,23 @@ import numpy as np
 import joblib
 import streamlit as st
 
+# === 2. CSS untuk latar putih & teks bersih ===
+st.set_page_config(page_title="Prediksi Petir & Sambaran CG", layout="centered")
+
+st.markdown("""
+    <style>
+        body, .main, .block-container {
+            background-color: white;
+            color: #222;
+        }
+        .stTitle, .stMarkdown, .stMetricValue {
+            color: #111 !important;
+        }
+        .stMetricLabel {
+            color: #666 !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
 # === 2. Load Model Klasifikasi dan Dua Regresi (Log + Linear) ===
 model_cls, fitur_model = joblib.load("model_klasifikasi_petir4.pkl")
 model_log, fitur_model_log = joblib.load("model_regresi_log.pkl")
