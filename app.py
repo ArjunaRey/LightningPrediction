@@ -16,7 +16,7 @@ with st.sidebar:
     st.image("logo_stmkg.png", width=140)
     st.markdown("#### Arjuna Reynaldi")
     st.markdown("*STMKG 2025*")
-    st.markdown("📧 arjunareynaldi58@gmail.com")
+    st.markdown("arjunareynaldi58@gmail.com")
     st.markdown("---")
     st.markdown("📘 *Aplikasi ini memprediksi petir dan estimasi sambaran CG berdasarkan parameter atmosfer.*")
     st.markdown("🧠 Model: XGBClassifier & XGBRegressor")
@@ -30,7 +30,7 @@ with st.sidebar:
 
 # === 3. Streamlit Interface ===
 st.set_page_config(page_title="Prediksi Petir & Jumlah Sambaran CG", layout="centered")
-st.title("🌩️ Prediksi Kejadian Petir dan Estimasi Jumlah Sambaran CG")
+st.title("🌩️ Prediksi Kejadian dan Estimasi Jumlah Sambaran CG")
 st.markdown("Masukkan parameter atmosfer berikut:")
 
 # === 4. Form Input User ===
@@ -63,7 +63,7 @@ if submitted:
     }])[fitur_model]
 
     prob = model_cls.predict_proba(X_input_cls)[0, 1]
-    klasifikasi = "⚡ Petir" if prob >= 0.5 else "✅ Non-Petir"
+    klasifikasi = "⚡ Diprediksi akan terjadi sambaran dalam 12 jam ke depan" if prob >= 0.5 else "✅ Diprediksi tidak akan terjadi sambaran dalam 12 jam ke depan"
 
     st.metric("Probabilitas Petir", f"{prob:.0%}")
     st.success(f"Hasil Klasifikasi: {klasifikasi}")
