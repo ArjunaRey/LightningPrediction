@@ -5,22 +5,29 @@ import joblib
 import streamlit as st
 
 # === 2. CSS untuk latar putih & teks bersih ===
-st.set_page_config(page_title="Prediksi Petir & Sambaran CG", layout="centered")
-
+# === CSS Styling untuk White Theme Total ===
 st.markdown("""
     <style>
-        body, .main, .block-container {
-            background-color: white;
-            color: #222;
-        }
-        .stTitle, .stMarkdown, .stMetricValue {
-            color: #111 !important;
-        }
-        .stMetricLabel {
-            color: #666 !important;
-        }
+    html, body, [data-testid="stApp"], .main, .block-container {
+        background-color: white !important;
+        color: #111 !important;
+    }
+    .stNumberInput input {
+        background-color: white !important;
+        color: #111 !important;
+        border: 1px solid #ccc;
+    }
+    .stButton button {
+        background-color: #0c66f5 !important;
+        color: white !important;
+        border: none;
+    }
+    .stMetricLabel, .stMetricValue {
+        color: #111 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
+
 # === 2. Load Model Klasifikasi dan Dua Regresi (Log + Linear) ===
 model_cls, fitur_model = joblib.load("model_klasifikasi_petir4.pkl")
 model_log, fitur_model_log = joblib.load("model_regresi_log.pkl")
