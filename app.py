@@ -50,7 +50,7 @@ with st.form("form_input"):
 
 
 # === 5. Proses Prediksi ===
-if submitted:
+if submit:
     # --- Klasifikasi ---
     X_input_cls = pd.DataFrame([{
         'LI': LI,
