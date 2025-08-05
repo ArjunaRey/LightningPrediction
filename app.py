@@ -63,7 +63,7 @@ if submitted:
     }])[fitur_model]
 
     prob = model_cls.predict_proba(X_input_cls)[0, 1]
-    klasifikasi = "⚡ Diprediksi akan terjadi sambaran dalam 12 jam ke depan" if prob >= 0.5 else "✅ Diprediksi tidak akan terjadi sambaran dalam 12 jam ke depan"
+    klasifikasi = "⚡ Diprediksi akan terjadi sambaran CG dalam 12 jam ke depan" if prob >= 0.5 else "✅ Diprediksi tidak akan terjadi sambaran CG dalam 12 jam ke depan"
 
     st.metric("Probabilitas Petir", f"{prob:.0%}")
     st.success(f"Hasil Klasifikasi: {klasifikasi}")
@@ -101,7 +101,7 @@ if submitted:
         final_pred = np.clip(final_pred, 0, 10000)
 
         try:
-            st.metric("Estimasi Jumlah Sambaran CG", f"{int(final_pred):,} sambaran")
+            st.metric("Estimasi Jumlah Sambaran", f"{int(final_pred):,} sambaran")
             #st.info(f"Prediksi gabungan model log (α={alpha}) dan linear.")
         except OverflowError:
             st.error("❗ Prediksi jumlah sambaran terlalu besar untuk ditampilkan.")
