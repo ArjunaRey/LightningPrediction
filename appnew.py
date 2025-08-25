@@ -79,9 +79,10 @@ if st.button("Prediksi Petir"):
 
             # Tahap 2: Prediksi jumlah sambaran
             pred_count = reg_model.predict(df_input)[0]
-            pred_count = np.round(np.maximum(pred_count, 0), 2)
+            pred_count = int(np.round(np.maximum(pred_count, 0)))
             st.subheader("Prediksi Jumlah Sambaran CG")
             st.info(f"Perkiraan jumlah sambaran: {pred_count} kali")
+
         else:
             st.subheader("Hasil Klasifikasi")
             st.error(f"Tidak terdeteksi petir (Probabilitas: {prob_class:.2f})")
