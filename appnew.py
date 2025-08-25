@@ -43,7 +43,7 @@ cols = st.columns(3)
 for i, feature in enumerate(predictors):
     default_val = float(feature_means.get(feature, 0.0))
     min_val = -100.0  # batas minimal semua fitur
-    max_val = 1e5     # batas maksimal semua fitur
+    max_val = 200000     # batas maksimal semua fitur
 
     # Pastikan default_val tidak di bawah min atau di atas max
     default_val = max(default_val, min_val)
