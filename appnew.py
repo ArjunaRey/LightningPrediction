@@ -1,53 +1,53 @@
-# app.py
 import streamlit as st
 import pandas as pd
 import joblib
+import numpy as np
 
-# === Load model ===
+# === 1. Load models ===
 clf_model = joblib.load("xgb_classifier.joblib")
 reg_model = joblib.load("xgb_regressor.joblib")
 
-# Daftar prediktor sesuai dataset (hapus ws10)
-predictors = [
-    "t_500", "t_700", "t_850", "z_1000", "r_500", "r_700", "r_850", "w_700",
-    "cape", "msl", "tcc", "d2m", "tcrw", "u500", "u850", "v500", "v850",
-    "sp", "u10", "v10", "t2m"
-]
+# === 2. Ambil urutan fitur dari model klasifikasi ===
+predictors = list(clf_model.feature_names_in_)
 
-st.set_page_config(page_title="Prediksi Kejadian Petir", layout="wide")
+# === 3. Load dataset untuk ambil rata-rata (pastikan file sama dengan training)
+df = pd.read_excel("dataset_clean_capped.xlsx")
+feature_means = df[predictors].mean()
 
-st.title("⚡ Prediksi Kejadian dan Jumlah Sambaran Petir")
-st.write("Masukkan parameter cuaca sesuai variabel prediktor.")
+# === 4. Streamlit UI ===
+st.title("Aplikasi Prediksi Petir CG (Dua Tahap)")
+st.markdown("Masukkan nilai parameter atmosfer berikut:")
 
-# === Form Input ===
+# Input data dalam layout 3 kolom, default = rata-rata dataset
 input_data = {}
-cols = st.columns(3)  # bagi jadi 3 kolom biar rapi
-
+cols = st.columns(3)
 for i, feature in enumerate(predictors):
+    default_val = float(feature_means[feature])
     with cols[i % 3]:
-        input_data[feature] = st.number_input(f"{feature}", value=0.0, step=0.1)
+        input_data[feature] = st.number_input(
+            label=f"{feature}", 
+            value=default_val, 
+            step=0.1,
+            format="%.2f"
+        )
 
-# === Prediksi ===
-if st.button("🔍 Prediksi"):
-    df_input = pd.DataFrame([input_data])
+# Buat DataFrame sesuai urutan fitur model
+df_input = pd.DataFrame([input_data])[predictors]
 
-    # Samakan urutan kolom dengan model
-    df_input = df_input[clf_model.feature_names_in_]
-
-    # Klasifikasi (kejadian petir)
+# === 5. Prediksi ===
+if st.button("Prediksi Petir"):
+    # Tahap 1: Klasifikasi ada/tidaknya petir
     pred_class = clf_model.predict(df_input)[0]
-    prob_class = clf_model.predict_proba(df_input)[0][1]
+    prob_class = clf_model.predict_proba(df_input)[0][1]  # probabilitas petir
 
-    # Regresi (jumlah sambaran)
+    st.subheader("Hasil Klasifikasi")
     if pred_class == 1:
-        pred_reg = reg_model.predict(df_input)[0]
+        st.success(f"**Petir terdeteksi** (Probabilitas: {prob_class:.2f})")
+        
+        # Tahap 2: Prediksi jumlah sambaran
+        pred_count = reg_model.predict(df_input)[0]
+        pred_count = np.maximum(pred_count, 0)  # hindari prediksi negatif
+        st.subheader("Prediksi Jumlah Sambaran CG")
+        st.info(f"Perkiraan jumlah sambaran: {pred_count:.2f} kali")
     else:
-        pred_reg = 0
-
-    # === Output ===
-    st.subheader("Hasil Prediksi")
-    if pred_class == 1:
-        st.success(f"⚡ Petir DIPREDIKSI terjadi (Probabilitas {prob_class:.2%})")
-        st.info(f"Perkiraan jumlah sambaran petir: **{pred_reg:.0f} kali**")
-    else:
-        st.warning(f"☀️ Tidak ada petir (Probabilitas {prob_class:.2%})")
+        st.error(f"Tidak terdeteksi petir (Probabilitas: {prob_class:.2f})")
