@@ -11,7 +11,6 @@ reg_model = joblib.load("xgb_regressor.joblib")
 try:
     predictors = list(clf_model.feature_names_in_)
 except AttributeError:
-    # fallback kalau model lama tidak punya feature_names_in_
     predictors = clf_model.get_booster().feature_names
 
 # === 3. Load dataset untuk ambil rata-rata (pastikan file sama dengan training) ===
@@ -26,7 +25,7 @@ st.markdown("Masukkan nilai parameter atmosfer berikut:")
 input_data = {}
 cols = st.columns(3)
 for i, feature in enumerate(predictors):
-    default_val = float(feature_means[feature])
+    default_val = float(feature_means.get(feature, 0.0))  # fallback jika kolom hilang
     with cols[i % 3]:
         input_data[feature] = st.number_input(
             label=f"{feature}",
@@ -35,15 +34,29 @@ for i, feature in enumerate(predictors):
             format="%.2f"
         )
 
-# Buat DataFrame sesuai urutan fitur model dan tipe float
-df_input = pd.DataFrame([input_data], columns=predictors).astype(float)
+# Buat DataFrame sesuai urutan fitur model
+df_input = pd.DataFrame([input_data])
 
-# === 5. Prediksi ===
+# === 5. Pastikan input sesuai dengan model ===
+# Tambahkan kolom yang hilang dengan default 0
+for col in predictors:
+    if col not in df_input.columns:
+        df_input[col] = 0.0
+
+# Hapus kolom ekstra yang tidak dipakai
+for col in df_input.columns:
+    if col not in predictors:
+        df_input.drop(columns=[col], inplace=True)
+
+# Susun ulang kolom sesuai urutan model dan tipe float
+df_input = df_input[predictors].astype(float)
+
+# === 6. Prediksi ===
 if st.button("Prediksi Petir"):
     try:
         # Tahap 1: Klasifikasi ada/tidaknya petir
         pred_class = clf_model.predict(df_input)[0]
-        prob_class = clf_model.predict_proba(df_input)[0][1]  # probabilitas petir
+        prob_class = clf_model.predict_proba(df_input)[0][1]
 
         st.subheader("Hasil Klasifikasi")
         if pred_class == 1:
@@ -51,7 +64,7 @@ if st.button("Prediksi Petir"):
 
             # Tahap 2: Prediksi jumlah sambaran
             pred_count = reg_model.predict(df_input)[0]
-            pred_count = np.maximum(pred_count, 0)  # hindari prediksi negatif
+            pred_count = np.maximum(pred_count, 0)
             st.subheader("Prediksi Jumlah Sambaran CG")
             st.info(f"Perkiraan jumlah sambaran: {pred_count:.2f} kali")
         else:
