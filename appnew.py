@@ -29,22 +29,26 @@ try:
 except AttributeError:
     predictors = clf_model.get_booster().feature_names
 
-# === 4. Load dataset untuk ambil rata-rata (pastikan file sama dengan training) ===
+# === 4. Load dataset untuk ambil rata-rata ===
 df = pd.read_csv("dataset-clean-capped.csv")
 feature_means = df[predictors].mean()
 
 # === 5. Streamlit UI utama ===
-st.title("Aplikasi Prediksi Kejadian dan Jumlah Sambaran CG")
-st.markdown("Masukkan nilai parameter atmosfer berikut:")
+st.title("Aplikasi Prediksi Kejadian dan Jumlah Sambaran CG ")
+st.markdown("Masukkan data reanalisis atmosfer berikut:")
 
-# Input data dalam layout 3 kolom, default = rata-rata dataset
+# Input data dalam layout 3 kolom
 input_data = {}
 cols = st.columns(3)
 for i, feature in enumerate(predictors):
-    default_val = float(feature_means.get(feature, 0.0))  # fallback jika kolom hilang
-    # Contoh validasi: tidak boleh <0 untuk fitur tertentu (opsional)
-    min_val = 0.0 if "temp" not in feature.lower() else -100.0
-    max_val = 1e5
+    default_val = float(feature_means.get(feature, 0.0))
+    min_val = -100.0  # batas minimal semua fitur
+    max_val = 1e5     # batas maksimal semua fitur
+
+    # Pastikan default_val tidak di bawah min atau di atas max
+    default_val = max(default_val, min_val)
+    default_val = min(default_val, max_val)
+
     with cols[i % 3]:
         input_data[feature] = st.number_input(
             label=f"{feature}",
@@ -82,5 +86,5 @@ if st.button("Prediksi Petir"):
             st.subheader("Hasil Klasifikasi")
             st.error(f"Tidak terdeteksi petir (Probabilitas: {prob_class:.2f})")
 
-    except ValueError as e:
+    except ValueError:
         st.error("⚠️ Terjadi mismatch fitur antara input dan model.")
