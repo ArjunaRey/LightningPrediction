@@ -30,7 +30,10 @@ for i, feature in enumerate(predictors):
 
 # === Prediksi ===
 if st.button("🔍 Prediksi"):
-    df_input = pd.DataFrame([input_data])  # konversi ke DataFrame
+    df_input = pd.DataFrame([input_data])
+    
+    # Samakan urutan kolom dengan model
+    df_input = df_input[clf_model.feature_names_in_]
     
     # Klasifikasi (kejadian petir)
     pred_class = clf_model.predict(df_input)[0]
@@ -41,6 +44,7 @@ if st.button("🔍 Prediksi"):
         pred_reg = reg_model.predict(df_input)[0]
     else:
         pred_reg = 0
+
     
     # === Output ===
     st.subheader("Hasil Prediksi")
