@@ -38,18 +38,22 @@ for i, feature in enumerate(predictors):
 df_input = pd.DataFrame([input_data])
 
 # === 5. Pastikan input sesuai dengan model ===
-# Tambahkan kolom yang hilang dengan default 0
+# Tambahkan kolom yang hilang
 for col in predictors:
     if col not in df_input.columns:
         df_input[col] = 0.0
 
-# Hapus kolom ekstra yang tidak dipakai
-for col in df_input.columns:
-    if col not in predictors:
-        df_input.drop(columns=[col], inplace=True)
+# Hapus kolom ekstra
+extra_cols = [c for c in df_input.columns if c not in predictors]
+if extra_cols:
+    df_input.drop(columns=extra_cols, inplace=True)
 
-# Susun ulang kolom sesuai urutan model dan tipe float
+# Susun ulang kolom sesuai urutan model
 df_input = df_input[predictors].astype(float)
+
+# Debugging: tampilkan agar tahu kalau mismatch
+st.write("🔍 Model features:", predictors)
+st.write("🔍 Input features:", list(df_input.columns))
 
 # === 6. Prediksi ===
 if st.button("Prediksi Petir"):
@@ -71,4 +75,5 @@ if st.button("Prediksi Petir"):
             st.error(f"Tidak terdeteksi petir (Probabilitas: {prob_class:.2f})")
 
     except ValueError as e:
-        st.error(f"Terjadi kesalahan prediksi: {e}")
+        st.error("⚠️ Terjadi mismatch fitur antara input dan model.")
+        st.code(str(e))
