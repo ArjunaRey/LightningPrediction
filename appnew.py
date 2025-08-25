@@ -56,7 +56,7 @@ for i, feature in enumerate(predictors):
             min_value=min_val,
             max_value=max_val,
             step=0.1,
-            format="%.2f"
+            format="%.9f"
         )
 
 # Buat DataFrame sesuai input user
