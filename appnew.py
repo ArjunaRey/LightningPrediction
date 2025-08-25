@@ -14,7 +14,7 @@ except AttributeError:
     predictors = clf_model.get_booster().feature_names
 
 # === 3. Load dataset untuk ambil rata-rata (pastikan file sama dengan training) ===
-df = pd.read_excel("dataset_clean_capped.xlsx")
+df = pd.read_csv("dataset-clean-capped.csv")
 feature_means = df[predictors].mean()
 
 # === 4. Streamlit UI ===
