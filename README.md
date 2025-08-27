@@ -1,1 +1,1 @@
-# LightningPrediction
+This project implements a two-stage machine learning model to predict cloud-to-ground (CG) lightning using ERA5 atmospheric data and actual lightning strike records. The first stage classifies whether lightning will occur, and the second stage estimates the number of strikes if detected. The model is evaluated using F1-Score, Accuartion, Precision, Recall, CSI, MAE, RMSE, and NRMSE, and deployed as a Streamlit web app for real-time predictions.
