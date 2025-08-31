@@ -75,7 +75,7 @@ if st.button("Prediksi Petir"):
 
         if pred_class == 1:
             st.subheader("Hasil Klasifikasi")
-            st.success(f"**Petir terdeteksi** (Probabilitas: {prob_class:.2f})")
+            st.success(f"**Diprediksi akan terjadi sambaran dalam 3 jam ke depan** (Probabilitas: {prob_class:.2f})")
 
             # Tahap 2: Prediksi jumlah sambaran
             pred_count = reg_model.predict(df_input)[0]
@@ -85,7 +85,7 @@ if st.button("Prediksi Petir"):
 
         else:
             st.subheader("Hasil Klasifikasi")
-            st.error(f"Tidak terdeteksi petir (Probabilitas: {prob_class:.2f})")
+            st.error(f"Diprediksi tidak akan terjadi sambaran dalam 3 jam ke depan (Probabilitas: {prob_class:.2f})")
 
     except ValueError:
         st.error("⚠️ Terjadi mismatch fitur antara input dan model.")
