@@ -10,7 +10,7 @@ with st.sidebar:
     st.markdown("*STMKG 2025*")
     st.markdown("arjunareynaldi58@gmail.com")
     st.markdown("---")
-    st.markdown("📘 *Aplikasi ini memprediksi petir dan estimasi sambaran CG berdasarkan parameter atmosfer.*")
+    st.markdown("📘 *Aplikasi ini memprediksi probabiliats terjadinya petir CG dan jumlah sambarannya berdasarkan parameter reanalisis atmosfer.*")
     st.markdown("🧠 Model: XGBClassifier & XGBRegressor")
     with st.expander("ℹ️ Cara Penggunaan"):
         st.markdown("""
