@@ -35,7 +35,7 @@ feature_means = df[predictors].mean()
 
 # === 5. Streamlit UI utama ===
 st.title("Aplikasi Prediksi Kejadian dan Jumlah Sambaran CG ")
-st.markdown("Masukkan data reanalisis atmosfer berikut:")
+st.markdown("Masukkan data reanalisis ERA5 berikut:")
 
 # Input data dalam layout 3 kolom
 input_data = {}
